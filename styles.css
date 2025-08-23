@@ -974,7 +974,7 @@ video {
             bottom: 25px;
             right: 25px;
             width: 400px;
-            height: 550px;
+            height: 90vh;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
@@ -1027,6 +1027,7 @@ video {
             align-items: center;
             justify-content: center;
             transition: background 0.2s;
+            padding-bottom: 4px;
         }
 
         .control-btn:hover {
@@ -1189,10 +1190,10 @@ video {
             font-size: 13px;
         }
 
-        @media (max-width: 450px) {
+        @media (max-width: 767px) {
             .chat-window {
-                width: calc(90vw - 20px);
-                height: calc(90vh - 40px);
+                width: calc(100vw - 20px);
+                height: calc(91vh - 40px);
                 right: 10px;
                 bottom: 10px;
                 border-radius: 15px;
