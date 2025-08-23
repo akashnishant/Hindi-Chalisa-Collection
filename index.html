@@ -2741,6 +2741,50 @@
                 </div>
             </div>
         </div>
+
+        <!-- Chat Bubble -->
+    <div class="chat-bubble" onclick="toggleChat()">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+        </svg>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-title">🕉️ Indian Mythology AI</div>
+            <div class="chat-controls">
+                <button class="control-btn" onclick="minimizeChat()" title="Minimize">−</button>
+                <button class="control-btn" onclick="closeChat()" title="Close">×</button>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <div class="bot-message">
+                🕉️ **Namaste!** I'm your specialized Indian Mythology AI assistant. 
+                
+                I can help you explore:
+                • Hindu mythology and Puranas
+                • Epic tales from Ramayana & Mahabharata
+                • Buddhist and Jain mythological stories
+                • Indian gods, goddesses, and deities
+                • Sacred texts and scriptures
+                • Regional mythological traditions
+                
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <div class="input-container">
+                <textarea class="chat-input" id="messageInput" placeholder="Type your message..." rows="1"></textarea>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
     </main>
 
     <!-- Footer -->
@@ -2783,6 +2827,10 @@
         }
 
     </script>
+
+    <!--Chat Script-->
+    <script src="./chat.js"></script>
+
     <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'95e2450db46fff71',t:'MTc1MjM0MTQ0MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
     <iframe height="1" width="1"
         style="position: absolute; top: 0px; left: 0px; border: none; visibility: hidden;"></iframe>
