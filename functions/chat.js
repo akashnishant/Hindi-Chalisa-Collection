@@ -1,5 +1,11 @@
 export async function onRequest(context) {
   const { request, env } = context;
+
+  // Only allow POST
+  if (request.method !== "POST") {
+    return new Response("Method Not Allowed", { status: 405 });
+  }
+
   const body = await request.json();
 
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
