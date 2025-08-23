@@ -1002,7 +1002,8 @@ video {
         }
 
         .chat-header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            /* background: linear-gradient(135deg, #667eea, #764ba2); */
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             color: white;
             padding: 20px;
             display: flex;
@@ -1032,7 +1033,7 @@ video {
             align-items: center;
             justify-content: center;
             transition: background 0.2s;
-            padding-bottom: 4px;
+            padding-bottom: 2px;
         }
 
         .control-btn:hover {
@@ -1070,6 +1071,7 @@ video {
             display: flex;
             flex-direction: column;
             gap: 15px;
+            width: 100%;
         }
 
         .message {
@@ -1165,7 +1167,7 @@ video {
         .send-btn {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
             border: none;
             border-radius: 50%;
             color: white;
@@ -1198,7 +1200,7 @@ video {
         @media (max-width: 767px) {
             .chat-window {
                 width: calc(100vw - 20px);
-                height: 60vh;
+                height: calc(100vh - 100px);
                 right: 10px;
                 bottom: 10px;
                 border-radius: 15px;
