@@ -1,5 +1,4 @@
 let isOpen = false;
-// let apiKey = "gsk_e77fNrZv6i0jb2ofGp25WGdyb3FYkNaEWsfakEgtXbZbznLZwYD5";
 let conversationHistory = [];
 
 // Auto-resize textarea
