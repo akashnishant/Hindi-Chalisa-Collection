@@ -1198,7 +1198,7 @@ video {
         @media (max-width: 767px) {
             .chat-window {
                 width: calc(100vw - 20px);
-                height: 450px;
+                height: 60vh;
                 right: 10px;
                 bottom: 10px;
                 border-radius: 15px;

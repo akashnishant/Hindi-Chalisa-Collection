@@ -291,7 +291,7 @@ If you need current information about Indian mythology topics (like recent disco
     };
 
     const data = await callGroqAPI(requestBody);
-    let aiResponse = data.choices[0].message.content;
+    let aiResponse = data?.choices[0]?.message?.content;
 
     // Check if AI indicates it needs web search
     if (aiResponse.includes("I need to search for current information")) {
@@ -322,11 +322,11 @@ If you need current information about Indian mythology topics (like recent disco
         };
 
         const data2 = await callGroqAPI2(contextRequestBody);
-        let contextResponse2 = data2.choices[0].message.content;
+        let contextResponse2 = data2?.choices[0]?.message?.content;
 
         if (contextResponse2.ok) {
           const contextData = await contextResponse2.json();
-          aiResponse = contextData.choices[0].message.content;
+          aiResponse = contextData?.choices[0]?.message?.content;
         }
       }
     }
