@@ -1,5 +1,6 @@
 let isOpen = false;
 let conversationHistory = [];
+let WORKER_ENDPOINT = "https://chalisa.akashnishant25.workers.dev";
 
 // Auto-resize textarea
 document.getElementById("messageInput").addEventListener("input", function () {
@@ -175,6 +176,67 @@ async function searchWeb(query) {
   }
 }
 
+async function callGroqAPI(requestBody) {
+  if (
+    !WORKER_ENDPOINT ||
+    WORKER_ENDPOINT !== "https://chalisa.akashnishant25.workers.dev"
+  ) {
+    throw new Error("Cloudflare Worker endpoint not configured");
+  }
+
+  const response = await fetch(WORKER_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(requestBody),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error("Worker Error Response:", errorText);
+    throw new Error(`Worker Error: ${response.status} - ${errorText}`);
+  }
+
+  return await response.json();
+}
+
+async function callGroqAPI2(requestBody) {
+  if (
+    !WORKER_ENDPOINT ||
+    WORKER_ENDPOINT !== "https://chalisa.akashnishant25.workers.dev"
+  ) {
+    throw new Error("Cloudflare Worker endpoint not configured");
+  }
+
+  const contextResponse = await fetch(WORKER_ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "system",
+          content: `You are a specialized AI assistant focused exclusively on Indian mythology. Use the following web search results to answer the user's question about Indian mythology. Provide accurate information based on the search results and cite sources when relevant. Only answer if the question is related to Indian mythology.\n\nSearch Results:\n${searchContext}`,
+        },
+        { role: "user", content: message },
+      ],
+      temperature: 0.7,
+      max_tokens: 1000,
+    }),
+  });
+
+  if (!contextResponse.ok) {
+    const errorText = await contextResponse.text();
+    console.error("Worker Error Response:", errorText);
+    throw new Error(`Worker Error: ${contextResponse.status} - ${errorText}`);
+  }
+
+  return await contextResponse.json();
+}
+
 async function sendMessage() {
   const messageInput = document.getElementById("messageInput");
   const message = messageInput.value.trim();
@@ -228,33 +290,7 @@ If you need current information about Indian mythology topics (like recent disco
       max_tokens: 1000,
     };
 
-    const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-    });
-    const response = await res.json();
-    // const response = await fetch(
-    //   "https://api.groq.com/openai/v1/chat/completions",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       Authorization: `Bearer ${apiKey}`,
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(requestBody),
-    //   }
-    // );
-
-    console.log("RESPONSE", response);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("API Error Response:", errorText);
-      throw new Error(`API Error: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
+    const data = await callGroqAPI(requestBody);
     let aiResponse = data.choices[0].message.content;
 
     // Check if AI indicates it needs web search
@@ -285,31 +321,11 @@ If you need current information about Indian mythology topics (like recent disco
           max_tokens: 1000,
         };
 
-        const contextResponse = await fetch(
-          "https://api.groq.com/openai/v1/chat/completions",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${''}`,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              model: "llama-3.3-70b-versatile",
-              messages: [
-                {
-                  role: "system",
-                  content: `You are a specialized AI assistant focused exclusively on Indian mythology. Use the following web search results to answer the user's question about Indian mythology. Provide accurate information based on the search results and cite sources when relevant. Only answer if the question is related to Indian mythology.\n\nSearch Results:\n${searchContext}`,
-                },
-                { role: "user", content: message },
-              ],
-              temperature: 0.7,
-              max_tokens: 1000,
-            }),
-          }
-        );
+        const data2 = await callGroqAPI2(contextRequestBody);
+        let contextResponse2 = data2.choices[0].message.content;
 
-        if (contextResponse.ok) {
-          const contextData = await contextResponse.json();
+        if (contextResponse2.ok) {
+          const contextData = await contextResponse2.json();
           aiResponse = contextData.choices[0].message.content;
         }
       }
