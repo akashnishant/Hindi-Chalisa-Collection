@@ -974,7 +974,6 @@ video {
             bottom: 25px;
             right: 25px;
             width: 400px;
-            height: 90vh;
             background: white;
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.3);
@@ -983,6 +982,12 @@ video {
             overflow: hidden;
             z-index: 1001;
             animation: slideUp 0.3s ease-out;
+        }
+
+        @media (min-width: 768px) {
+          .chat-window {
+            height: 90vh;
+          }
         }
 
         @keyframes slideUp {
@@ -1193,7 +1198,7 @@ video {
         @media (max-width: 767px) {
             .chat-window {
                 width: calc(100vw - 20px);
-                height: calc(80vh - 40px);
+                height: calc(70vh - 40px);
                 right: 10px;
                 bottom: 10px;
                 border-radius: 15px;
