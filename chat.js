@@ -290,7 +290,7 @@ If you need current information about Indian mythology topics (like recent disco
           {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${apiKey}`,
+              Authorization: `Bearer ${''}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
