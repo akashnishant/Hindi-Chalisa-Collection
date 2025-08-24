@@ -15,9 +15,10 @@
 }
 
 .tab-active {
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
+  /* background: linear-gradient(135deg, #ff6b35, #f7931e); */
   color: white;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.3) inset !important;
+  background-image: linear-gradient(to right, #8A2BE2, #9932CC) !important;
 }
 
 .gradient-bg {
@@ -223,6 +224,11 @@ body {
 .box-shadow-class {
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.3) inset !important;
   background: transparent !important;
+}
+
+.box-shadow-class-button {
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.3) inset !important;
+  background: transparent;
 }
 
 hr {
@@ -1532,4 +1538,11 @@ video {
     bottom: 10px;
     border-radius: 15px;
   }
+}
+
+
+
+
+button {
+  background: transparent;
 }
