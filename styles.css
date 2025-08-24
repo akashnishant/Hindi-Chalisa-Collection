@@ -7,6 +7,8 @@
 
 .verse {
   transition: all 0.3s ease;
+  background-color: #2c1a40;
+  color: #f9f9f9 !important;
 }
 
 .verse:hover {
@@ -18,7 +20,7 @@
   /* background: linear-gradient(135deg, #ff6b35, #f7931e); */
   color: white;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.3) inset !important;
-  background-image: linear-gradient(to right, #8A2BE2, #9932CC) !important;
+  background: linear-gradient(to right, #1a1a1a, #3f0d66, #8e2de2) !important;
 }
 
 .gradient-bg {
@@ -222,8 +224,8 @@ body {
 }
 
 .box-shadow-class {
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6), -2px -2px 5px rgba(255, 255, 255, 0.3) inset !important;
   background: transparent !important;
+  padding-top: 0px !important;
 }
 
 .box-shadow-class-button {
@@ -663,14 +665,14 @@ video {
   background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
 }
 
-.bg-white {
+/* .  {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-white\/20 {
+. \/20 {
   background-color: rgb(255 255 255 / 0.2);
-}
+} */
 
 .bg-yellow-50 {
   --tw-bg-opacity: 1;
@@ -944,7 +946,7 @@ video {
   transition-duration: 300ms;
 }
 
-.hover\:bg-white\/30:hover {
+.hover\: \/30:hover {
   background-color: rgb(255 255 255 / 0.3);
 }
 
@@ -1263,7 +1265,7 @@ video {
   right: 25px;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  background: linear-gradient(to right, #1a1a1a, #3f0d66, #8e2de2);
   border-radius: 50%;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -1291,9 +1293,11 @@ video {
   bottom: 25px;
   right: 25px;
   width: 400px;
-  background: white;
+  background: black;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05),
+    0 10px 25px rgba(255, 255, 255, 0.07),
+    0 20px 40px rgba(255, 255, 255, 0.1);
   display: none;
   flex-direction: column;
   overflow: hidden;
@@ -1303,7 +1307,7 @@ video {
 
 @media (min-width: 992px) {
   .chat-window {
-    height: 70vh;
+    height: 95vh;
   }
 }
 
@@ -1319,8 +1323,7 @@ video {
 }
 
 .chat-header {
-  /* background: linear-gradient(135deg, #667eea, #764ba2); */
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  background: linear-gradient(to right, #1a1a1a, #3f0d66, #8e2de2);
   color: white;
   padding: 20px;
   display: flex;
@@ -1381,6 +1384,24 @@ video {
   color: #28a745;
 }
 
+.default-bot-msg {
+  background-color: #000;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 0 5px rgba(0, 200, 255, 0.2),
+    0 4px 15px rgba(0, 200, 255, 0.15),
+    0 8px 30px rgba(0, 200, 255, 0.1);
+
+  &:hover {
+    box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.2),
+    0 0 20px rgba(255, 255, 255, 0.15);;
+  }
+}
+
 .chat-messages {
   flex: 1;
   overflow-y: auto;
@@ -1422,19 +1443,34 @@ video {
 
 .bot-message {
   align-self: flex-start;
-  background: white;
   color: #333;
   white-space: pre-wrap;
   word-wrap: break-word;
+  background-color: #000;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
+  box-shadow:
+    0 0 5px rgba(0, 200, 255, 0.2),
+    0 4px 15px rgba(0, 200, 255, 0.15),
+    0 8px 30px rgba(0, 200, 255, 0.1);
+
+  &:hover {
+    box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.2),
+    0 0 20px rgba(255, 255, 255, 0.15);;
+  }
 }
 
 .loading-message {
   align-self: flex-start;
-  background: white;
+  background: black;
   color: #666;
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 15px;
 }
 
 .typing-indicator {
@@ -1470,8 +1506,8 @@ video {
 
 .chat-input-area {
   padding: 20px;
-  border-top: 1px solid #e9ecef;
-  background: white;
+  border-top: 0px solid #e9ecef;
+  background: transparent;
 }
 
 .input-container {
@@ -1483,14 +1519,25 @@ video {
 .chat-input {
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #ddd;
+  border: 0px solid #ddd;
   border-radius: 20px;
   font-size: 14px;
   resize: none;
   min-height: 40px;
-  max-height: 100px;
+  max-height: 50px;
   outline: none;
   transition: border-color 0.2s;
+  overflow-y: auto;
+  background: transparent;
+  color: white;
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.05),
+    0 10px 25px rgba(255, 255, 255, 0.07),
+    0 20px 40px rgba(255, 255, 255, 0.1);
+  &:hover {
+    box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.2),
+    0 0 20px rgba(255, 255, 255, 0.15);
+  }
 }
 
 .chat-input:focus {
@@ -1500,7 +1547,7 @@ video {
 .send-btn {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  background: linear-gradient(to right, #1a1a1a, #3f0d66, #8e2de2);
   border: none;
   border-radius: 50%;
   color: white;
