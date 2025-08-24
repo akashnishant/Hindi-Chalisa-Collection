@@ -1579,6 +1579,9 @@ video {
 }
 
 @media (max-width: 767px) {
+  .website-header {
+    display: none;
+  }
   .chat-window {
     width: calc(100vw - 20px);
     height: calc(100vh - 100px);
