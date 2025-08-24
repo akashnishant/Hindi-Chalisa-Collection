@@ -1,11 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const omAudio = document.getElementById("omAudio");
+  const omAudio = document.getElementById('omAudio');
 
-  const enableAudio = () => {
+  // Check if audio is already allowed to play
+  const tryPlay = () => {
     omAudio.volume = 0.1;
-    omAudio.play();
-    document.removeEventListener('scroll', enableAudio);
+    const playPromise = omAudio.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          console.log('Om audio playing.');
+        })
+        .catch(error => {
+          console.warn('Audio autoplay failed:', error);
+        });
+    }
   };
 
-  document.addEventListener('scroll', enableAudio);
+  // Only trigger once on first scroll
+  const handleFirstScroll = () => {
+    tryPlay();
+    window.removeEventListener('click', handleFirstScroll);
+  };
+
+  // Attach listener
+  window.addEventListener('click', handleFirstScroll);
 });
