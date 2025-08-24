@@ -152,30 +152,6 @@ function showError(message) {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-async function searchWeb(query) {
-  try {
-    const searchUrl = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(
-      query
-    )}&count=3`;
-    const response = await fetch(searchUrl, {
-      method: "GET",
-      headers: {
-        "X-Subscription-Token": "", // This is a demo token, users should get their own
-      },
-    });
-
-    if (!response.ok) {
-      return [];
-    }
-
-    const data = await response.json();
-    return data.web?.results?.slice(0, 3) || [];
-  } catch (error) {
-    console.error("Search error:", error);
-    return [];
-  }
-}
-
 async function callGroqAPI(requestBody) {
   if (
     !WORKER_ENDPOINT ||
@@ -201,7 +177,7 @@ async function callGroqAPI(requestBody) {
   return await response.json();
 }
 
-async function callGroqAPI2(requestBody) {
+async function searchWeb(requestBody) {
   if (
     !WORKER_ENDPOINT ||
     WORKER_ENDPOINT !== "https://chalisa.akashnishant25.workers.dev"
@@ -209,32 +185,21 @@ async function callGroqAPI2(requestBody) {
     throw new Error("Cloudflare Worker endpoint not configured");
   }
 
-  const contextResponse = await fetch(WORKER_ENDPOINT, {
+  const response = await fetch(WORKER_ENDPOINT+'/search', {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      model: "llama-3.3-70b-versatile",
-      messages: [
-        {
-          role: "system",
-          content: `You are a specialized AI assistant focused exclusively on Indian mythology. Use the following web search results to answer the user's question about Indian mythology. Provide accurate information based on the search results and cite sources when relevant. Only answer if the question is related to Indian mythology.\n\nSearch Results:\n${searchContext}`,
-        },
-        { role: "user", content: message },
-      ],
-      temperature: 0.7,
-      max_tokens: 1000,
-    }),
+    body: JSON.stringify(requestBody),
   });
 
-  if (!contextResponse.ok) {
-    const errorText = await contextResponse.text();
+  if (!response.ok) {
+    const errorText = await response.text();
     console.error("Worker Error Response:", errorText);
-    throw new Error(`Worker Error: ${contextResponse.status} - ${errorText}`);
+    throw new Error(`Worker Error: ${response.status} - ${errorText}`);
   }
 
-  return await contextResponse.json();
+  return await response.json();
 }
 
 async function sendMessage() {
@@ -278,7 +243,9 @@ When providing mythological information, format your responses clearly using:
 - Structure information with clear sections
 - Keep responses well-organized and easy to read
 
-If you need current information about Indian mythology topics (like recent discoveries, temple news, etc.), respond with "I need to search for current information about this Indian mythology topic."`;
+If you need current information about Indian mythology topics (like recent discoveries, temple news, etc.), respond with "I need to search for current information about this Indian mythology topic."
+
+If the user asks anything about the upcoming festivals or dates about festivals or mythological events, then also respond with "I need to search for current information about this Indian mythology topic."`;
 
     const requestBody = {
       model: "llama-3.3-70b-versatile",
@@ -286,49 +253,42 @@ If you need current information about Indian mythology topics (like recent disco
         { role: "system", content: systemPrompt },
         ...conversationHistory.slice(-10), // Keep last 10 messages for context
       ],
-      temperature: 0.7,
+      temperature: 0.1,
       max_tokens: 1000,
     };
 
     const data = await callGroqAPI(requestBody);
-    let aiResponse = data?.choices[0]?.message?.content;
+    let aiResponse = "";
+    if(data && data?.choices?.length) {
+      aiResponse = data?.choices[0]?.message?.content;
+    } else if(aiResponse?.error?.message === "Internal Server Error") {
+      aiResponse = "There is some error at my end. Please try after some time."
+    } else {
+      aiResponse = "Please try after few minutes";
+    }
+    
 
     // Check if AI indicates it needs web search
-    if (aiResponse.includes("I need to search for current information")) {
+    if (aiResponse.includes("I need to search for current information about this Indian mythology topic.")) {
       // Perform web search
-      const searchResults = await searchWeb(message);
-
-      if (searchResults.length > 0) {
-        // Create context from search results
-        const searchContext = searchResults
-          .map(
-            (result) =>
-              `Title: ${result.title}\nURL: ${result.url}\nSnippet: ${result.description}`
-          )
-          .join("\n\n");
-
-        // Get AI response with search context
+      let webSearchMsg = document.getElementById("loadingMessage");
+      webSearchMsg.innerHTML = `
+                    <span>Searching the Web</span>
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>`;
+      // Get AI response with search context
         const contextRequestBody = {
-          model: "llama-3.3-70b-versatile",
-          messages: [
-            {
-              role: "system",
-              content: `You are a helpful AI assistant. Use the following web search results to answer the user's question. Provide accurate information based on the search results and cite sources when relevant.\n\nSearch Results:\n${searchContext}`,
-            },
-            { role: "user", content: message },
-          ],
-          temperature: 0.7,
-          max_tokens: 1000,
+          query: message,
+          search_depth: "advanced",
+          include_answer: true,
+          include_images: false
         };
 
-        const data2 = await callGroqAPI2(contextRequestBody);
-        let contextResponse2 = data2?.choices[0]?.message?.content;
-
-        if (contextResponse2.ok) {
-          const contextData = await contextResponse2.json();
-          aiResponse = contextData?.choices[0]?.message?.content;
-        }
-      }
+        const data2 = await searchWeb(contextRequestBody);
+        aiResponse = data2?.answer;
     }
 
     // Remove loading message and add AI response
